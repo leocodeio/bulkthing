@@ -1,11 +1,13 @@
-import { trpc } from "@/server/trpc/server";
+"use client";
+import { trpc } from "@/server/trpc/client";
 import { Suspense } from "react";
-import { ClientGreeting } from "./client-greeting";
-export default async function Home() {
-  void (await trpc.hello.prefetch({ text: "world" }));
+
+export default function Home() {
+  const [data] = trpc.hello.useSuspenseQuery({ text: "harry" });
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ClientGreeting />
+      <div>{data.greeting}</div>
     </Suspense>
   );
 }
