@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum YtCreatorStatus {
+  active
+  inactive
+  suspended
+  deleted
+}
+
+model YtCreator {
+  id           String           @id @default(uuid())
+  creatorId    String           @unique
+  email        String           @unique
+  accessToken  String           @unique
+  refreshToken String           @unique
+  status       YtCreatorStatus  @default(active)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("yt_creator")
+}
