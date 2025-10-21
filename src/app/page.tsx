@@ -1,18 +1,11 @@
-"use client";
-import { Button } from "@/components/ui/button";
-
-export default function Home() {
+import { trpc } from "@/server/trpc/server";
+import { Suspense } from "react";
+import { ClientGreeting } from "./client-greeting";
+export default async function Home() {
+  void (await trpc.hello.prefetch({ text: "world" }));
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Button
-        onClick={() => {
-          fetch("/api")
-            .then((res) => res.json())
-            .then((data) => console.log(data));
-        }}
-      >
-        Click me
-      </Button>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ClientGreeting />
+    </Suspense>
   );
 }
